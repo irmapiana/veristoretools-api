@@ -1,0 +1,26 @@
+#!/bin/sh
+
+target=Veristore_Tools_2_Queue_Listen_3
+service=veristore-tools-2-queue-listen-3
+active_path=$(pwd)
+os_version=$(echo $(echo $(hostnamectl | grep "CentOS Linux 7") | grep -o "[[:digit:]]*") | cut -d" " -f 1)
+
+if test -z "$os_version"
+then
+	echo "Operating System Not Supported\nRequirement: CentOS Linux 7"
+else
+	if [ $os_version -eq 7 ]
+	then
+		echo "Installing "$target" Service"
+		echo -e "[Unit]\nDescription="$target"\nRequiresMountsFor="$active_path"\n\n[Service]\nLimitNOFILE=2048:4096\nType=idle\nStartLimitBurst=15\nStartLimitInterval=300\nRestart=on-failure\nRestartSec=10\nExecStart=/usr/bin/php74 "$active_path"/yii queue/listen\n\n[Install]\nWantedBy=multi-user.target\n" > $service.service
+		sudo chmod 664 $service.service
+		sudo mv $service.service /etc/systemd/system/$service.service
+		sudo systemctl daemon-reload
+		sudo systemctl enable $service.service
+		sudo systemctl start $service.service
+		echo "Installing "$target" Service Done"
+	else
+		echo "Operating System Not Supported\nRequirement: CentOS Linux 7"
+	fi
+fi
+

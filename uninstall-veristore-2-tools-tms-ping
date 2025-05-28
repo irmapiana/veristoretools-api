@@ -1,0 +1,23 @@
+#!/bin/sh
+
+target=Veristore_Tools_2_Tms_Ping
+service=veristore-tools-2-tms-ping
+os_version=$(echo $(echo $(hostnamectl | grep "CentOS Linux 7") | grep -o "[[:digit:]]*") | cut -d" " -f 1)
+
+if test -z "$os_version"
+then
+	echo "Operating System Not Supported\nRequirement: CentOS Linux 7"
+else
+	if [ $os_version -eq 7 ]
+	then
+		echo "Uninstalling "$target" Service"
+		sudo systemctl stop $service.service
+		sudo systemctl disable $service.service
+		sudo rm /etc/systemd/system/$service.service
+		sudo systemctl daemon-reload
+		echo "Uninstalling "$target" Service Done"
+	else
+		echo "Operating System Not Supported\nRequirement: CentOS Linux 7"
+	fi
+fi
+

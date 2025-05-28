@@ -1,0 +1,2 @@
+@echo off
+cmd /k C:\sonar-scanner\bin\sonar-scanner.bat -X -D"sonar.projectName=Veristore Tools" -D"sonar.projectKey=veristore-tools" -D"sonar.login=cb3fa4e3150ff55512b37e3287ded00e2c893809" -D"sonar.sources=." -D"sonar.host.url=https://sonarqube.vfiengineering.com" -D"sonar.exclusions=requirements.php, nbproject/**, vagrant/**, vendor/**, web/**" -D"sonar.cpd.php.minimumtokens=1000" -D"sonar.cpd.php.minimumLines=100" -D"sonar.scm.disabled=True" -D"sonar.sourceEncoding=UTF-8"
